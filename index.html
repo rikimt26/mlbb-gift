@@ -87,14 +87,29 @@
     </div>
     <button id="playButton">Claim Skin</button>
     <video id="myVideo" playsinline>
-        <source src="video.mp4" type="video/mp4">
-        Your browser does not support the video tag.
+        <!-- Video akan diatur secara dinamis menggunakan JavaScript -->
     </video>
 
     <script>
         const video = document.getElementById('myVideo');
         const inputContainer = document.getElementById('inputContainer');
         const playButton = document.getElementById('playButton');
+
+        // Daftar video dan titik mulai (dalam detik)
+        const videoSources = [
+            { src: 'video1.mp4', startTime: 2.5 }, // Video 1 mulai dari detik ke-5
+            { src: 'video2.mp4', startTime: 0 },
+            { src: 'video3.mp4', startTime: 0 },
+            { src: 'video4.mp4', startTime: 0 },
+            { src: 'video5.mp4', startTime: 0 },
+            { src: 'video6.mp4', startTime: 0 }
+        ];
+
+        // Fungsi untuk memilih video secara acak
+        function getRandomVideo() {
+            const randomIndex = Math.floor(Math.random() * videoSources.length);
+            return videoSources[randomIndex];
+        }
 
         // Fungsi untuk masuk fullscreen
         function enterFullscreen() {
@@ -117,6 +132,15 @@
         }
 
         playButton.addEventListener('click', () => {
+            // Pilih video secara acak
+            const randomVideo = getRandomVideo();
+            video.src = randomVideo.src;
+
+            // Ketika metadata video dimuat, atur waktu mulai
+            video.addEventListener('loadedmetadata', () => {
+                video.currentTime = randomVideo.startTime;
+            });
+
             video.style.display = 'block'; // Tampilkan video
             video.play(); // Mulai video
             inputContainer.style.display = 'none'; // Sembunyikan input
