@@ -5,40 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mobile Legends : Bang Bang | Claim Skin Legend</title>
     <style>
-        body {
+        /* Reset margin dan padding */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
             background-color: black;
+            height: 100vh;
+            margin: 0;
         }
+
+        #inputContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        input {
+            margin: 5px 0;
+            padding: 15px;
+            font-size: 16px;
+            width: 80%;
+            max-width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 15px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 300px;
+        }
+
         video {
+            display: none; /* Video disembunyikan sampai tombol play ditekan */
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: none; /* Disembunyikan sampai tombol play diklik */
+            background-color: black;
         }
-        button {
-            margin-top: 10px;
-            z-index: 10;
-            padding: 10px 20px;
-            font-size: 18px;
-            cursor: pointer;
+
+        /* Responsif untuk tablet */
+        @media (max-width: 768px) {
+            input, button {
+                font-size: 14px;
+                padding: 10px;
+                width: 90%;
+            }
         }
-        input {
-            z-index: 10;
-            padding: 10px 20px;
-            font-size: 18px;
-            cursor: pointer;
+
+        /* Responsif untuk HP kecil */
+        @media (max-width: 480px) {
+            input, button {
+                font-size: 12px;
+                padding: 8px;
+                width: 95%;
+            }
         }
     </style>
 </head>
 <body>
-    <div>\
-
+    <div id="inputContainer">
         <input type="text" placeholder="ID" id="input1">
         <input type="text" placeholder="Server" id="input2">
     </div>
@@ -50,16 +93,37 @@
 
     <script>
         const video = document.getElementById('myVideo');
-        const input1 = document.getElementById('input1');
-        const input2 = document.getElementById('input2');
+        const inputContainer = document.getElementById('inputContainer');
         const playButton = document.getElementById('playButton');
+
+        // Fungsi untuk masuk fullscreen
+        function enterFullscreen() {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.webkitRequestFullscreen) {
+                video.webkitRequestFullscreen();
+            } else if (video.msRequestFullscreen) {
+                video.msRequestFullscreen();
+            }
+        }
+
+        // Fungsi untuk mengunci orientasi landscape
+        function lockOrientation() {
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(err => {
+                    console.warn("Orientation lock not supported:", err);
+                });
+            }
+        }
 
         playButton.addEventListener('click', () => {
             video.style.display = 'block'; // Tampilkan video
-            video.play(); // Putar video
-            playButton.style.display = 'none'; // Sembunyikan tombol play
-            input1.style.display = 'none'; // Sembunyikan tombol play
-            input2.style.display = 'none'; // Sembunyikan tombol play
+            video.play(); // Mulai video
+            inputContainer.style.display = 'none'; // Sembunyikan input
+            playButton.style.display = 'none'; // Sembunyikan tombol
+
+            enterFullscreen(); // Masuk fullscreen
+            lockOrientation(); // Kunci orientasi landscape
         });
     </script>
 </body>
